@@ -15,6 +15,8 @@ class Employee(models.Model):
         return self.name
 
 
+class UploadExcelFile(models.Model):
+    upload_to= models.FileField(upload_to='excel')
 # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 

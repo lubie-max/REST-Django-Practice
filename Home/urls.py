@@ -20,6 +20,7 @@ from .views import  *
 urlpatterns = [
 
       path('genview/', EmployeeGeneric.as_view()),
+      path('excel', ImportingAndExportingExcel.as_view()),
       path('genview/<id>/', EmployeeGenericPatchAndDelete.as_view()),
     # path('empdata/' , EmployeeAPI.as_view() ),
     # path('register/',UserTokenGenerator.as_view() )

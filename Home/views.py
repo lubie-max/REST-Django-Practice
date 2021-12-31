@@ -1,3 +1,4 @@
+from os import read
 from django.contrib.auth import authenticate
 from django.db.models.query import QuerySet
 from django.shortcuts import render,HttpResponse
@@ -12,9 +13,44 @@ from .models import *
 from rest_framework.views import APIView
 from django.contrib.auth.models import User
 from rest_framework.authtoken.models import Token
+import pandas as pd
+from django.conf import settings
+import uuid
 # Create your views here.
 
+# [4] Importing and Exporting Excel Files.
 
+class ImportingAndExportingExcel(APIView):
+    def get(self, request):
+        empObj= Employee.objects.all()
+        empserl= EmployeeSerializers(empObj, many=True)
+        data_frame= pd.DataFrame(empserl.data,)
+        print(data_frame)
+        data_frame.to_csv(f"static/excel/{uuid.uuid4()}.csv",encoding="UTF-8", index=False)
+
+
+        return Response({'200':"It's Being worked."})
+
+
+    def post(self, request):
+        uplExelObj= UploadExcelFile.objects.create(upload_to= request.FILES['files'])
+        data= pd.read_csv(f"{settings.BASE_DIR}/static/{uplExelObj.upload_to}")
+        print(data.values.tolist())
+        
+        return Response({'status':"Uploaded successfully."})
+
+
+
+
+
+
+
+
+
+
+
+
+# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 # [3].Generic views
 # just to avoid huge code writing
 from rest_framework import generics
